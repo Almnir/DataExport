@@ -1,0 +1,12 @@
+D:\myprojects\DataExport\DataExport\bin\Debug\DataExport.exe
+D:\myprojects\DataExport\DataExport\bin\Debug\DataExport.pdb
+D:\myprojects\DataExport\DataExport\obj\Debug\DataExport.csprojResolveAssemblyReference.cache
+D:\myprojects\DataExport\DataExport\obj\Debug\DataExport.Properties.Resources.resources
+D:\myprojects\DataExport\DataExport\obj\Debug\DataExport.csproj.GenerateResource.Cache
+D:\myprojects\DataExport\DataExport\obj\Debug\DataExport.exe
+D:\myprojects\DataExport\DataExport\obj\Debug\DataExport.pdb
+D:\myprojects\DataExport\DataExport\bin\Debug\DataExport.exe.config
+D:\myprojects\DataExport\DataExport\obj\Debug\DataExport.DataExportForm.resources
+D:\myprojects\DataExport\DataExport\obj\Debug\DataExport.SettingsForm.resources
+D:\myprojects\DataExport\DataExport\bin\Debug\NLog.dll
+D:\myprojects\DataExport\DataExport\bin\Debug\NLog.xml
