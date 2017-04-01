@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Ionic.Zip;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace DataExport
 {
@@ -120,7 +124,34 @@ namespace DataExport
             DialogResult userClicked = dlg.ShowDialog();
             if (userClicked == DialogResult.OK)
             {
-                
+                foreach (ListViewItem item in this.tablesList.CheckedItems)
+                {
+                    using (SqlConnection connection = new SqlConnection(Globals.GetConnectionString()))
+                    {
+                        connection.Open();
+
+                        string query = string.Format(@";WITH XMLNAMESPACES ('http://rustest.ru/giadbset' AS ns1)
+                                            SELECT *
+                                            FROM {0}
+                                            FOR XML PATH('{0}'), ROOT('GIADBSet'); ", item.Text);
+                        SqlCommand command = new SqlCommand(query, connection);
+                        XmlWriterSettings settings = new XmlWriterSettings();
+                        settings.Indent = true;
+                        settings.Encoding = Encoding.UTF8;
+                        settings.CloseOutput = true;
+                        using (XmlReader reader = command.ExecuteXmlReader())
+                        using (XmlWriter writer = XmlWriter.Create(item.Text + ".xml", settings))
+                        {
+                            writer.WriteNode(reader, true);
+                        }
+                        using (ZipFile zip = new ZipFile(dlg.FileName + ".zip"))
+                        {
+                            zip.AddFile(item.Text + ".xml");
+                            zip.Save();
+                        }
+                    }
+                }
+                MessageBox.Show("Успешно!");
             }
         }
     }

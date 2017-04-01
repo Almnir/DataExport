@@ -10,3 +10,16 @@ D:\myprojects\DataExport\DataExport\obj\Debug\DataExport.DataExportForm.resource
 D:\myprojects\DataExport\DataExport\obj\Debug\DataExport.SettingsForm.resources
 D:\myprojects\DataExport\DataExport\bin\Debug\NLog.dll
 D:\myprojects\DataExport\DataExport\bin\Debug\NLog.xml
+J:\Projects\DataExport\DataExport\bin\Debug\DataExport.exe.config
+J:\Projects\DataExport\DataExport\bin\Debug\DataExport.exe
+J:\Projects\DataExport\DataExport\bin\Debug\DataExport.pdb
+J:\Projects\DataExport\DataExport\bin\Debug\Ionic.Zip.dll
+J:\Projects\DataExport\DataExport\bin\Debug\NLog.dll
+J:\Projects\DataExport\DataExport\bin\Debug\NLog.xml
+J:\Projects\DataExport\DataExport\obj\Debug\DataExport.csprojResolveAssemblyReference.cache
+J:\Projects\DataExport\DataExport\obj\Debug\DataExport.DataExportForm.resources
+J:\Projects\DataExport\DataExport\obj\Debug\DataExport.Properties.Resources.resources
+J:\Projects\DataExport\DataExport\obj\Debug\DataExport.SettingsForm.resources
+J:\Projects\DataExport\DataExport\obj\Debug\DataExport.csproj.GenerateResource.Cache
+J:\Projects\DataExport\DataExport\obj\Debug\DataExport.exe
+J:\Projects\DataExport\DataExport\obj\Debug\DataExport.pdb
