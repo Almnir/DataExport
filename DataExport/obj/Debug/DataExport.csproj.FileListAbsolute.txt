@@ -23,3 +23,17 @@ J:\Projects\DataExport\DataExport\obj\Debug\DataExport.SettingsForm.resources
 J:\Projects\DataExport\DataExport\obj\Debug\DataExport.csproj.GenerateResource.Cache
 J:\Projects\DataExport\DataExport\obj\Debug\DataExport.exe
 J:\Projects\DataExport\DataExport\obj\Debug\DataExport.pdb
+d:\myprojects\myprojects\DataExport\DataExport\bin\Debug\DataExport.exe.config
+d:\myprojects\myprojects\DataExport\DataExport\bin\Debug\DataExport.exe
+d:\myprojects\myprojects\DataExport\DataExport\bin\Debug\DataExport.pdb
+d:\myprojects\myprojects\DataExport\DataExport\bin\Debug\Ionic.Zip.dll
+d:\myprojects\myprojects\DataExport\DataExport\bin\Debug\NLog.dll
+d:\myprojects\myprojects\DataExport\DataExport\bin\Debug\NLog.xml
+d:\myprojects\myprojects\DataExport\DataExport\obj\Debug\DataExport.csprojResolveAssemblyReference.cache
+d:\myprojects\myprojects\DataExport\DataExport\obj\Debug\DataExport.DataExportForm.resources
+d:\myprojects\myprojects\DataExport\DataExport\obj\Debug\DataExport.Properties.Resources.resources
+d:\myprojects\myprojects\DataExport\DataExport\obj\Debug\DataExport.SettingsForm.resources
+d:\myprojects\myprojects\DataExport\DataExport\obj\Debug\DataExport.csproj.GenerateResource.Cache
+d:\myprojects\myprojects\DataExport\DataExport\obj\Debug\DataExport.exe
+d:\myprojects\myprojects\DataExport\DataExport\obj\Debug\DataExport.pdb
+d:\myprojects\myprojects\DataExport\DataExport\obj\Debug\DataExport.ProgressWindow.resources

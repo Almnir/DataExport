@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -30,7 +31,7 @@ namespace DataExport
                 {
                     if (DatabaseHelper.CheckConnection())
                     {
-                        PopulateTablesList();
+                        LoadTablesList();
                     }
                     else
                     {
@@ -42,7 +43,7 @@ namespace DataExport
             {
                 if (DatabaseHelper.CheckConnection())
                 {
-                    PopulateTablesList();
+                    LoadTablesList();
                 }
                 else
                 {
@@ -78,6 +79,27 @@ namespace DataExport
             {
                 ListViewItem lvi = new ListViewItem(table);
                 tablesList.Items.Add(lvi);
+            }
+        }
+
+        private void LoadTablesList()
+        {
+            List<string> tables = DatabaseHelper.GetTables(Globals.GetConnectionString());
+            resultList = new List<string>();
+            foreach (var table in tables)
+            {
+                if (Globals.TABLES_NAMES.Contains(table) && !resultList.Contains(table))
+                {
+                    resultList.Add(table);
+                }
+            }
+            foreach (var table in resultList)
+            {
+                if (Globals.TABLES_NAMES.Contains(table))
+                {
+                    ListViewItem lvi = new ListViewItem(table);
+                    tablesList.Items.Add(lvi);
+                }
             }
         }
 
@@ -119,39 +141,30 @@ namespace DataExport
 
         private void startExport_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(Globals.frmSettings.ServerText) || string.IsNullOrEmpty(Globals.frmSettings.DatabaseText)
+                || string.IsNullOrEmpty(Globals.frmSettings.LoginText) || string.IsNullOrEmpty(Globals.frmSettings.PasswordText))
+            {
+                MessageBox.Show("Подключение не задано!", "Внимание!");
+                return;
+            }
+            if (this.tablesList.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("Ни одной таблицы не выбрано!", "Внимание!");
+                return;
+            }
+            List<string> checkedTables = new List<string>();
+            foreach (ListViewItem ct in this.tablesList.CheckedItems)
+            {
+                checkedTables.Add(ct.Text);
+            }
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.DefaultExt = ".zip";
             DialogResult userClicked = dlg.ShowDialog();
             if (userClicked == DialogResult.OK)
             {
-                foreach (ListViewItem item in this.tablesList.CheckedItems)
-                {
-                    using (SqlConnection connection = new SqlConnection(Globals.GetConnectionString()))
-                    {
-                        connection.Open();
-
-                        string query = string.Format(@";WITH XMLNAMESPACES ('http://rustest.ru/giadbset' AS ns1)
-                                            SELECT *
-                                            FROM {0}
-                                            FOR XML PATH('{0}'), ROOT('GIADBSet'); ", item.Text);
-                        SqlCommand command = new SqlCommand(query, connection);
-                        XmlWriterSettings settings = new XmlWriterSettings();
-                        settings.Indent = true;
-                        settings.Encoding = Encoding.UTF8;
-                        settings.CloseOutput = true;
-                        using (XmlReader reader = command.ExecuteXmlReader())
-                        using (XmlWriter writer = XmlWriter.Create(item.Text + ".xml", settings))
-                        {
-                            writer.WriteNode(reader, true);
-                        }
-                        using (ZipFile zip = new ZipFile(dlg.FileName + ".zip"))
-                        {
-                            zip.AddFile(item.Text + ".xml");
-                            zip.Save();
-                        }
-                    }
-                }
-                MessageBox.Show("Успешно!");
+                ProgressWindow pw = new ProgressWindow();
+                ExportProcess eprocess = new ExportProcess(pw, checkedTables, dlg.FileName);
+                eprocess.ExportProcessRun();
             }
         }
     }

@@ -29,12 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.clearAllLabel = new System.Windows.Forms.LinkLabel();
+            this.tablesList = new System.Windows.Forms.ListView();
+            this.allLabel = new System.Windows.Forms.LinkLabel();
             this.settingsButton = new System.Windows.Forms.Button();
             this.startExport = new System.Windows.Forms.Button();
-            this.allLabel = new System.Windows.Forms.LinkLabel();
-            this.properLabel = new System.Windows.Forms.LinkLabel();
-            this.tablesList = new System.Windows.Forms.ListView();
-            this.clearAllLabel = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +44,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.clearAllLabel);
             this.groupBox1.Controls.Add(this.tablesList);
-            this.groupBox1.Controls.Add(this.properLabel);
             this.groupBox1.Controls.Add(this.allLabel);
             this.groupBox1.Location = new System.Drawing.Point(13, 12);
             this.groupBox1.Name = "groupBox1";
@@ -53,6 +51,42 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Выбор таблиц";
+            // 
+            // clearAllLabel
+            // 
+            this.clearAllLabel.AutoSize = true;
+            this.clearAllLabel.Location = new System.Drawing.Point(106, 20);
+            this.clearAllLabel.Name = "clearAllLabel";
+            this.clearAllLabel.Size = new System.Drawing.Size(58, 13);
+            this.clearAllLabel.TabIndex = 3;
+            this.clearAllLabel.TabStop = true;
+            this.clearAllLabel.Text = "Снять все";
+            this.clearAllLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.clearAllLabel_LinkClicked);
+            // 
+            // tablesList
+            // 
+            this.tablesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tablesList.CheckBoxes = true;
+            this.tablesList.Location = new System.Drawing.Point(7, 37);
+            this.tablesList.Name = "tablesList";
+            this.tablesList.Size = new System.Drawing.Size(480, 215);
+            this.tablesList.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.tablesList.TabIndex = 1;
+            this.tablesList.UseCompatibleStateImageBehavior = false;
+            this.tablesList.View = System.Windows.Forms.View.List;
+            // 
+            // allLabel
+            // 
+            this.allLabel.AutoSize = true;
+            this.allLabel.Location = new System.Drawing.Point(7, 20);
+            this.allLabel.Name = "allLabel";
+            this.allLabel.Size = new System.Drawing.Size(77, 13);
+            this.allLabel.TabIndex = 1;
+            this.allLabel.TabStop = true;
+            this.allLabel.Text = "Отметить все";
+            this.allLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.allLabel_LinkClicked);
             // 
             // settingsButton
             // 
@@ -76,53 +110,6 @@
             this.startExport.UseVisualStyleBackColor = true;
             this.startExport.Click += new System.EventHandler(this.startExport_Click);
             // 
-            // allLabel
-            // 
-            this.allLabel.AutoSize = true;
-            this.allLabel.Location = new System.Drawing.Point(7, 20);
-            this.allLabel.Name = "allLabel";
-            this.allLabel.Size = new System.Drawing.Size(26, 13);
-            this.allLabel.TabIndex = 1;
-            this.allLabel.TabStop = true;
-            this.allLabel.Text = "Все";
-            this.allLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.allLabel_LinkClicked);
-            // 
-            // properLabel
-            // 
-            this.properLabel.AutoSize = true;
-            this.properLabel.Location = new System.Drawing.Point(70, 20);
-            this.properLabel.Name = "properLabel";
-            this.properLabel.Size = new System.Drawing.Size(48, 13);
-            this.properLabel.TabIndex = 2;
-            this.properLabel.TabStop = true;
-            this.properLabel.Text = "Нужные";
-            this.properLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.properLabel_LinkClicked);
-            // 
-            // tablesList
-            // 
-            this.tablesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tablesList.CheckBoxes = true;
-            this.tablesList.Location = new System.Drawing.Point(7, 37);
-            this.tablesList.Name = "tablesList";
-            this.tablesList.Size = new System.Drawing.Size(480, 215);
-            this.tablesList.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.tablesList.TabIndex = 1;
-            this.tablesList.UseCompatibleStateImageBehavior = false;
-            this.tablesList.View = System.Windows.Forms.View.List;
-            // 
-            // clearAllLabel
-            // 
-            this.clearAllLabel.AutoSize = true;
-            this.clearAllLabel.Location = new System.Drawing.Point(157, 20);
-            this.clearAllLabel.Name = "clearAllLabel";
-            this.clearAllLabel.Size = new System.Drawing.Size(58, 13);
-            this.clearAllLabel.TabIndex = 3;
-            this.clearAllLabel.TabStop = true;
-            this.clearAllLabel.Text = "Снять все";
-            this.clearAllLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.clearAllLabel_LinkClicked);
-            // 
             // DataExportForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -143,7 +130,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.LinkLabel properLabel;
         private System.Windows.Forms.LinkLabel allLabel;
         private System.Windows.Forms.Button settingsButton;
         private System.Windows.Forms.Button startExport;
