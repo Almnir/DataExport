@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataExportForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.clearAllLabel = new System.Windows.Forms.LinkLabel();
             this.tablesList = new System.Windows.Forms.ListView();
@@ -118,6 +119,7 @@
             this.Controls.Add(this.startExport);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(200, 200);
             this.Name = "DataExportForm";
             this.Text = "Экспорт данных";

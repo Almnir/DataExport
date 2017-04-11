@@ -157,13 +157,25 @@ namespace DataExport
             {
                 checkedTables.Add(ct.Text);
             }
+            long estimateSize = 0;
+            List<string> nonemptyTables = DatabaseHelper.ExcludeEmptyTablesAndGetSize(checkedTables, out estimateSize);
+            if (nonemptyTables.Count == 0)
+            {
+                MessageBox.Show("Таблицы пусты!", "Внимание!");
+                return;
+            }
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.DefaultExt = ".zip";
             DialogResult userClicked = dlg.ShowDialog();
             if (userClicked == DialogResult.OK)
             {
+                if (DataExportHelper.GetTotalFreeSpace(Path.GetDirectoryName(Path.GetFullPath(dlg.FileName))) <= estimateSize)
+                {
+                    MessageBox.Show(string.Format("Мало свободного места для сохранения архива!\n Требуется примерно {0} байт.", estimateSize), "Внимание!");
+                    return;
+                }
                 ProgressWindow pw = new ProgressWindow();
-                ExportProcess eprocess = new ExportProcess(pw, checkedTables, dlg.FileName);
+                ExportProcess eprocess = new ExportProcess(pw, nonemptyTables, dlg.FileName);
                 eprocess.ExportProcessRun();
             }
         }

@@ -17,6 +17,11 @@ namespace DataExport
             return progressBar;
         }
 
+        public Label GetProgressLabel()
+        {
+            return progressLabel;
+        }
+
         public void SetMaximum(int max)
         {
             this.progressBar.Maximum = max;

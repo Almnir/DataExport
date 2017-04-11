@@ -1,8 +1,8 @@
 ﻿using Ionic.Zip;
+using NLog;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -12,12 +12,25 @@ namespace DataExport
 {
     class ExportProcess
     {
+
+        private static Logger log = LogManager.GetCurrentClassLogger();
+
         private BackgroundWorker backgroundWorker;
         private ProgressWindow progressWindow;
         private ProgressBar progressBar;
+        private Label progressLabel;
         private List<string> checkedTables;
         private string errorString;
         private string zipName;
+
+        /// <summary>
+        /// Состояние прогресса
+        /// </summary>
+        class ProgressState
+        {
+            public int Value { get; set; }
+            public string Content { get; set; }
+        }
 
         public ExportProcess(ProgressWindow progressWindow, List<string> checkedTables, string zipName)
         {
@@ -26,6 +39,7 @@ namespace DataExport
             this.errorString = string.Empty;
             this.zipName = zipName;
             this.progressBar = progressWindow.GetProgressBar();
+            this.progressLabel = progressWindow.GetProgressLabel();
 
             backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += BackgroundWorker_DoWork;
@@ -37,7 +51,12 @@ namespace DataExport
 
         private void BackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            this.progressBar.Value = e.ProgressPercentage;
+            if (!this.progressWindow.IsDisposed)
+            {
+                ProgressState state = e.UserState as ProgressState;
+                this.progressBar.Value = state.Value;
+                this.progressLabel.Text = state.Content;
+            }
         }
 
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -47,51 +66,62 @@ namespace DataExport
             if (e.Cancelled)
             {
                 MessageBox.Show("Выгрузка отменена!");
+                return;
             }
             if (e.Error == null)
             {
                 MessageBox.Show("Выгрузка завершена!");
+                return;
             }
         }
 
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            int i = 0;
-            for (; i < this.checkedTables.Count; i++)
+            try
             {
-                string tableName = this.checkedTables[i];
-                if (backgroundWorker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    break;
-                }
 
-                using (SqlConnection connection = new SqlConnection(Globals.GetConnectionString()))
+                int i = 0;
+                for (; i < this.checkedTables.Count; i++)
                 {
-                    connection.Open();
-                    string query = Globals.EXPORTS_QUERIES[tableName];
-                    SqlCommand command = new SqlCommand(query, connection);
-                    XmlWriterSettings settings = new XmlWriterSettings();
-                    settings.Indent = true;
-                    settings.Encoding = Encoding.UTF8;
-                    settings.CloseOutput = true;
-                    string path = Path.GetDirectoryName(Path.GetFullPath(this.zipName));
-                    string filePath = Path.Combine(path, tableName + ".xml");
-                    using (XmlReader reader = command.ExecuteXmlReader())
-                    using (XmlWriter writer = XmlWriter.Create(filePath, settings))
+                    string tableName = this.checkedTables[i];
+                    if (backgroundWorker.CancellationPending)
                     {
-                        writer.WriteNode(reader, true);
-                        writer.Flush();
+                        e.Cancel = true;
+                        break;
                     }
-                    using (ZipFile zip = new ZipFile(this.zipName))
+
+                    using (SqlConnection connection = new SqlConnection(Globals.GetConnectionString()))
                     {
-                        zip.AddFile(filePath, "");
-                        zip.Save();
+                        connection.Open();
+                        string query = Globals.EXPORTS_QUERIES[tableName];
+                        SqlCommand command = new SqlCommand(query, connection);
+                        XmlWriterSettings settings = new XmlWriterSettings();
+                        settings.Indent = true;
+                        settings.Encoding = Encoding.UTF8;
+                        settings.CloseOutput = true;
+                        string path = Path.GetDirectoryName(Path.GetFullPath(this.zipName));
+                        string filePath = Path.Combine(path, tableName + ".xml");
+                        using (XmlReader reader = command.ExecuteXmlReader())
+                        using (XmlWriter writer = XmlWriter.Create(filePath, settings))
+                        {
+                            writer.WriteNode(reader, true);
+                            writer.Flush();
+                        }
+                        using (ZipFile zip = new ZipFile(this.zipName))
+                        {
+                            zip.AddFile(filePath, "");
+                            zip.Save();
+                        }
+                        File.Delete(filePath);
                     }
-                    File.Delete(filePath);
+                    int percents = (i + 1) * 100 / this.checkedTables.Count;
+                    this.backgroundWorker.ReportProgress(percents, new ProgressState { Value = percents, Content = tableName });
                 }
-                int percents = (i+1) * 100 / this.checkedTables.Count;
-                this.backgroundWorker.ReportProgress(percents);
+            }
+            catch (System.Exception ex)
+            {
+                log.Error(ex.ToString());
+                MessageBox.Show(ex.ToString(), "Ошибка!");
             }
         }
 

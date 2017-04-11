@@ -69,6 +69,7 @@
             this.Controls.Add(this.cancelButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ProgressWindow";
+            this.ShowIcon = false;
             this.Text = "Выгрузка...";
             this.ResumeLayout(false);
 
